@@ -1,59 +1,53 @@
-// Data: semesters → subjects → notes
-const data = [
-    {
-        semester: "Semester 1",
-        subjects: [
-            {
-                name: "Physics",
-                notes: [
-                    { title: "Lecture 1", file: "semester1/physics/lecture1.pdf" },
-                    { title: "Lecture 2", file: "semester1/physics/lecture2.pdf" }
-                ]
-            },
-            {
-                name: "Electrical Engineering",
-                notes: [
-                    { title: "Circuit Basics", file: "semester1/electrical/circuits.pdf" }
-                ]
-            }
+// Example data structure for your materials
+const materials = {
+    "Semester 1": {
+        "Mathematics I": [
+            { name: "Lecture Notes", link: "notes/math1.pdf" },
+            { name: "Previous Year Papers", link: "papers/math1.pdf" }
+        ],
+        "Basic Electrical": [
+            { name: "Reference Book", link: "books/basic_electrical.pdf" }
         ]
     },
-    {
-        semester: "Semester 2",
-        subjects: [
-            {
-                name: "Mathematics",
-                notes: [
-                    { title: "Calculus Notes", file: "semester2/maths/calculus.pdf" }
-                ]
-            }
+    "Semester 2": {
+        "Physics": [
+            { name: "Lab Manual", link: "manuals/physics_lab.pdf" }
         ]
     }
-];
+};
 
-// Dynamically render
-document.addEventListener("DOMContentLoaded", function() {
+function loadContent() {
     const content = document.getElementById("content");
+    content.innerHTML = ""; // clear welcome text
 
-    data.forEach(sem => {
+    Object.keys(materials).forEach(sem => {
         const semDiv = document.createElement("div");
-        semDiv.innerHTML = `<h2>${sem.semester}</h2>`;
+        semDiv.className = "semester";
+        
+        const semTitle = document.createElement("h2");
+        semTitle.textContent = sem;
+        semDiv.appendChild(semTitle);
 
-        sem.subjects.forEach(sub => {
-            const subDiv = document.createElement("div");
-            subDiv.innerHTML = `<h3>${sub.name}</h3>`;
-
-            const ul = document.createElement("ul");
-            sub.notes.forEach(note => {
-                const li = document.createElement("li");
-                li.innerHTML = `<a href="${note.file}" target="_blank">${note.title}</a>`;
-                ul.appendChild(li);
-            });
-
-            subDiv.appendChild(ul);
-            semDiv.appendChild(subDiv);
+        const subjList = document.createElement("ul");
+        Object.keys(materials[sem]).forEach(subject => {
+            const subjItem = document.createElement("li");
+            subjItem.textContent = subject;
+            subjItem.addEventListener("click", () => showMaterials(sem, subject));
+            subjList.appendChild(subjItem);
         });
 
+        semDiv.appendChild(subjList);
         content.appendChild(semDiv);
     });
-});
+}
+
+function showMaterials(sem, subject) {
+    const content = document.getElementById("content");
+    content.innerHTML = `<h2>${subject} - ${sem}</h2><ul>`;
+    materials[sem][subject].forEach(item => {
+        content.innerHTML += `<li><a href="${item.link}" target="_blank">${item.name}</a></li>`;
+    });
+    content.innerHTML += "</ul><button onclick='loadContent()'>⬅ Back</button>";
+}
+
+document.addEventListener("DOMContentLoaded", loadContent);
