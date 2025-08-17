@@ -2,8 +2,8 @@
 const materials = {
     "Semester 1": {
         "Mathematics I": [
-            { name: "Lecture Notes", link: "notes/math1.pdf" },
-            { name: "Previous Year Papers", link: "papers/math1.pdf" }
+            { name: "Lecture Notes", link: "semester1/maths1/notes.pdf" },
+            { name: "Previous Year Papers", link: "semester1/maths1/pyq.pdf" }
         ],
         "Basic Electrical": [
             { name: "Reference Book", link: "books/basic_electrical.pdf" }
